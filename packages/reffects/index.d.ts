@@ -1,4 +1,6 @@
 type EventId = string;
+type EffectId = string;
+type CoeffectId = string;
 
 interface Event {
     id: EventId;
@@ -10,15 +12,19 @@ interface DelayedEvent extends Event {
 }
 
 interface Effects {
-    [effectName: string]: object
+    [effectName: string]: any
 }
 
-interface Coeffect{
-    id: string;
-    data?: object;
+interface CoeffectDescription {
+    coeffectId: CoeffectId;
+    data?: any;
 }
 
-type EventHandler = (coeffect?: Coeffect, payload?: object) => Effects;
+interface Coeffects {
+    [coeffectName: string]: any;
+}
+
+type EventHandler = (coeffects?: Coeffects, payload?: any) => Effects;
 
 type EffectHandler = Function;
 
@@ -29,12 +35,15 @@ export function dispatch(eventId: EventId): void;
 export function dispatchMany(events: Event|EventId[]): void;
 export function dispatchLater(event: DelayedEvent): void;
 
-export function registerEventHandler(eventId: EventId, handler: EventHandler, coeffectDescriptions?: Coeffect[]): void;
-export function registerCoeffectHandler(coeffectId: string, handler: CoeffectHandler): void;
-export function registerEffectHandler(effectId: string, handler: EffectHandler): void;
+export function registerEventHandler(eventId: EventId, handler: EventHandler, coeffectDescriptions?: CoeffectDescription[]): void;
+export function registerCoeffectHandler(coeffectId: CoeffectId, handler: CoeffectHandler): void;
+export function registerEffectHandler(effectId: EffectId, handler: EffectHandler): void;
 export function registerEventsDelegation(originalEvents: EventId[], targetEvent: EventId): void;
 
-export function coeffect(id: string, data?: object): Coeffect;
-export function getEffectHandler(effectId: string): EffectHandler; 
-export function getCoeffectHandler(coeffectId: string): CoeffectHandler;
+export function coeffect(id: CoeffectId, data?: any): CoeffectDescription|CoeffectId;
+export function getEffectHandler(effectId: EffectId): EffectHandler;
+export function getCoeffectHandler(coeffectId: CoeffectId): CoeffectHandler;
 export function getEventHandler(eventId: EventId): EventHandler;
+
+export function clearHandlers(): void;
+export function disableVerbosity(): void;
