@@ -9,7 +9,7 @@ interface DelayedEvent extends Event {
     milliseconds: number;
 }
 
-interface Effect {
+interface Effects {
     [effectName: string]: object
 }
 
@@ -18,7 +18,7 @@ interface Coeffect{
     data?: object;
 }
 
-type EventHandler = (coeffect?: Coeffect, payload?: object) => Effect;
+type EventHandler = (coeffect?: Coeffect, payload?: object) => Effects;
 
 type EffectHandler = Function;
 
